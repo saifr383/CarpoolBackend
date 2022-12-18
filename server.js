@@ -1,19 +1,25 @@
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+require('dotenv').config()
+const bodyParser=require('body-parser')
+require("./src/config/db.config");
+
+const twiliorouter=require('./src/routes/twilio-sms')
+const authroute=require('./src/routes/auth.routes')
+
+
 
 const app = express();
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
 
-app.use(cors(corsOptions));
 
-// parse requests of content-type - application/json
-app.use(express.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use('/twilio-sms',twiliorouter)
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
 
 app.use(
   cookieSession({
@@ -33,20 +39,8 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-const db = require("./models");
-const dbConfig = require("./config/db.config");
-db.mongoose
-  .connect(`mongodb://0.0.0.0:27017`, {
-    dbName: dbConfig.DB,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log("Successfully connect to MongoDB.");
-  })
-  .catch(err => {
-    console.error("Connection error", err);
-    process.exit();
-  });
-require('./routes/auth.routes')(app);
-require('./routes/user.routes')(app);
+
+
+
+
+app.use(authroute)
