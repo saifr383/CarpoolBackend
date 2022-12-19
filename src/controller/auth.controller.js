@@ -8,7 +8,7 @@ exports.signup = (req, res) => {
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
-    uid: req.body.uid,
+    _id: req.body.uid,
   });
 
   user.save((err, user) => {
