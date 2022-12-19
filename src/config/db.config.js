@@ -1,7 +1,9 @@
 const db = require("../models");
 
 db.mongoose
-  .connect(`mongodb://0.0.0.0:27017`, {
+  .connect(`mongodb+srv://abdullahkhan:abdullahkhan123@carpool.oe2b0ci.mongodb.net/?retryWrites=true&w=majority
+
+  `, {
     dbName: process.dbName,
     useNewUrlParser: true,
     useUnifiedTopology: true
